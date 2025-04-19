@@ -88,6 +88,7 @@ class CalculatorTest {
         assertEquals(expected, actual);
     }
 
+    //Teilaufgabe 1
     @Test
     @DisplayName("should display result after substracting two numbers")
     void testSubstract() {
@@ -98,6 +99,21 @@ class CalculatorTest {
         calc.pressEqualsKey();
 
         String expected = "2";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+
+    //Teilaufgabe 2 part 1
+    @Test
+    @DisplayName("should display 0 when pressing equals after negating zero")
+    void testNegativeZero() {
+        Calculator calc = new Calculator();
+        calc.pressDigitKey(0);
+        calc.pressNegativeKey(); // macht -0
+        calc.pressEqualsKey();
+
+        String expected = "0"; //erwartet wird "0", es wird aber "-0" angezeigt
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
