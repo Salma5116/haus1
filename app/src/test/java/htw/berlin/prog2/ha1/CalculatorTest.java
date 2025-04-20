@@ -94,6 +94,7 @@ class CalculatorTest {
     @DisplayName("should display result after substracting two numbers")
     void testSubstract() {
         Calculator calc = new Calculator();
+
         calc.pressDigitKey(4);
         calc.pressBinaryOperationKey("-");
         calc.pressDigitKey(2);
@@ -110,6 +111,7 @@ class CalculatorTest {
     @DisplayName("should display 0 when pressing equals after negating zero")
     void testNegativeZero() {
         Calculator calc = new Calculator();
+
         calc.pressDigitKey(0);
         calc.pressNegativeKey(); // macht -0
         calc.pressEqualsKey();

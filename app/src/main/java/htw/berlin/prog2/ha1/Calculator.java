@@ -118,6 +118,11 @@ public class Calculator {
      * und das Ergebnis direkt angezeigt.
      */
     public void pressEqualsKey() {
+        //Teilaufgabe 3 part 1
+        if (latestOperation.isEmpty()) {
+            if (screen.equals("-0")) screen = "0"; // Fix 1: -0 soll als 0 angezeigt werden
+            return;
+        }
         var result = switch(latestOperation) {
             case "+" -> latestValue + Double.parseDouble(screen);
             case "-" -> latestValue - Double.parseDouble(screen);
