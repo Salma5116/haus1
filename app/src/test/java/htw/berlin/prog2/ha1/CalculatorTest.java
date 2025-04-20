@@ -58,6 +58,7 @@ class CalculatorTest {
 
     @Test
     @DisplayName("should display error when drawing the square root of a negative number")
+
     void testSquareRootOfNegative() {
         Calculator calc = new Calculator();
 
@@ -114,6 +115,23 @@ class CalculatorTest {
         calc.pressEqualsKey();
 
         String expected = "0"; //erwartet wird "0", es wird aber "-0" angezeigt
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+
+    //Teilaufgabe 2 part 2
+    @Test
+    @DisplayName("should display an Error when equals is pressed without a second operand")
+    void testEqualsWithoutSecondOperand() {
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(0);
+        calc.pressBinaryOperationKey("+");
+        calc.pressEqualsKey(); // Hier wird +10, also mit sich selber addiert
+
+        String expected = "Error"; //Es wird 20 angezeigt
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
