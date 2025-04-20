@@ -8,6 +8,8 @@ package htw.berlin.prog2.ha1;
  */
 public class Calculator {
 
+    private boolean expectingSecondOperand = false; // Teilaufgabe 3 part 2
+
     private String screen = "0";
 
     private double latestValue;
@@ -32,7 +34,11 @@ public class Calculator {
         if(digit > 9 || digit < 0) throw new IllegalArgumentException();
 
         if(screen.equals("0") || latestValue == Double.parseDouble(screen)) screen = "";
-
+        //Teilaufgabe 3 part 2
+        if(expectingSecondOperand) {
+            screen= ""; // Bildschirm leeren für neue eingabe
+            expectingSecondOperand = false;
+        }
         screen = screen + digit;
     }
 
@@ -62,6 +68,7 @@ public class Calculator {
     public void pressBinaryOperationKey(String operation)  {
         latestValue = Double.parseDouble(screen);
         latestOperation = operation;
+        expectingSecondOperand = true; // Teilaufgabe 3 part 2, Es wird die 2. Zahl erwartet
     }
 
     /**
@@ -123,6 +130,13 @@ public class Calculator {
             if (screen.equals("-0")) screen = "0"; // Fix 1: -0 soll als 0 angezeigt werden
             return;
         }
+        //Teilaufgabe 3 part 2
+        if(expectingSecondOperand) { // Fix 2: Wenn keine 2.Eingabe gemacht wurde
+            screen = "Error";
+            expectingSecondOperand = false;
+            return;
+        }
+
         var result = switch(latestOperation) {
             case "+" -> latestValue + Double.parseDouble(screen);
             case "-" -> latestValue - Double.parseDouble(screen);
