@@ -138,7 +138,23 @@ class CalculatorTest {
 
         assertEquals(expected, actual);
     }
+    @Test
+    @DisplayName("should display an Error when equals is pressed without a second operand2")
+    void testEqualsWithoutSecondOperand2() {
+        Calculator calc = new Calculator();
 
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(0);
+        calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(5);
+        calc.pressEqualsKey();
+        calc.pressEqualsKey();// Hier wird +10, also mit sich selber addiert
+
+        String expected = "20"; //Es wird 20 angezeigt
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
 }
 
 

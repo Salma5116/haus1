@@ -8,7 +8,7 @@ package htw.berlin.prog2.ha1;
  */
 public class Calculator {
 
-    private boolean expectingSecondOperand = false; // Teilaufgabe 3 part 2
+    private boolean expectingSecondOperand = false; // Teilaufgabe 3 part 2, standard nicht erwartet, true wenn op verwendet wird
 
     private String screen = "0";
 
@@ -28,6 +28,10 @@ public class Calculator {
      * drücken kann muss der Wert positiv und einstellig sein und zwischen 0 und 9 liegen.
      * Führt in jedem Fall dazu, dass die gerade gedrückte Ziffer auf dem Bildschirm angezeigt
      * oder rechts an die zuvor gedrückte Ziffer angehängt angezeigt wird.
+     * Zusätzlich wird der Bildschirm geleert, falls unmittelbar zuvor eine binäre Operationstaste
+     * gedrückt wurde und der Rechner daher auf die Eingabe des zweiten Operanden wartet.
+     * In diesem Fall wird das Kontrollflag zurückgesetzt,
+     * um die Fortsetzung der normalen Eingabe zu ermöglichen.
      * @param digit Die Ziffer, deren Taste gedrückt wurde
      */
     public void pressDigitKey(int digit) {
@@ -35,9 +39,9 @@ public class Calculator {
 
         if(screen.equals("0") || latestValue == Double.parseDouble(screen)) screen = "";
         //Teilaufgabe 3 part 2
-        if(expectingSecondOperand) {
+        if(expectingSecondOperand) { // wenn erwartet dann..
             screen= ""; // Bildschirm leeren für neue eingabe
-            expectingSecondOperand = false;
+            expectingSecondOperand = false; // wenn eingegeben
         }
         screen = screen + digit;
     }
@@ -66,9 +70,9 @@ public class Calculator {
      * @param operation "+" für Addition, "-" für Substraktion, "x" für Multiplikation, "/" für Division
      */
     public void pressBinaryOperationKey(String operation)  {
-        latestValue = Double.parseDouble(screen);
-        latestOperation = operation;
-        expectingSecondOperand = true; // Teilaufgabe 3 part 2, Es wird die 2. Zahl erwartet
+        latestValue = Double.parseDouble(screen); //speichert den aktuellen Wert als 1. Zahl
+        latestOperation = operation; // merkt sich den aktuellen Operationsmodus
+        expectingSecondOperand = true; // Teilaufgabe 3 part 2, es wird die 2. Zahl erwartet
     }
 
     /**
@@ -126,28 +130,28 @@ public class Calculator {
      */
     public void pressEqualsKey() {
         //Teilaufgabe 3 part 1
-        if (latestOperation.isEmpty()) {
+        if (latestOperation.isEmpty()) { //Wenn keine Rechenoperation gespeichert ist dann if aktiv
             if (screen.equals("-0")) screen = "0"; // Fix 1: -0 soll als 0 angezeigt werden
-            return;
+            return; // damit methode beendet wird
         }
         //Teilaufgabe 3 part 2
         if(expectingSecondOperand) { // Fix 2: Wenn keine 2.Eingabe gemacht wurde
             screen = "Error";
-            expectingSecondOperand = false;
             return;
         }
 
-        var result = switch(latestOperation) {
+        var result = switch(latestOperation) { //Rechenoperationen
             case "+" -> latestValue + Double.parseDouble(screen);
             case "-" -> latestValue - Double.parseDouble(screen);
             case "x" -> latestValue * Double.parseDouble(screen);
             case "/" -> latestValue / Double.parseDouble(screen);
             default -> throw new IllegalArgumentException();
         };
-        screen = Double.toString(result);
+        screen = Double.toString(result); //Ergebnis wird angezeigt
         if(screen.equals("Infinity")) screen = "Error";
-        if(screen.endsWith(".0")) screen = screen.substring(0,screen.length()-2);
-        if(screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
+        if(screen.endsWith(".0")) screen = screen.substring(0,screen.length()-2); //entfernt unnötiges ".0"
+        if(screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10); //längere Dezimalzahlen werden abgeschnitten
     }
 }
+
 
